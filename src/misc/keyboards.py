@@ -2,7 +2,7 @@ from aiogram.types import (InlineKeyboardMarkup, InlineKeyboardButton,
                            ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove)
 from aiogram.utils.keyboard import InlineKeyboardBuilder, ReplyKeyboardBuilder
 
-from ..db.models import Day, Booking
+from ..db.models import Day
 
 def clear_kb() -> ReplyKeyboardRemove:
     return ReplyKeyboardRemove()

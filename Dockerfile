@@ -7,4 +7,5 @@ COPY . /app/
 WORKDIR /app/
 # RUN python -m pip install --upgrade pip && pip install -r requirements.txt
 RUN pip install -r requirements.txt
+RUN /usr/bin/env python -V && /usr/bin/env python -m pip freeze
 CMD ["python", "run.py"]

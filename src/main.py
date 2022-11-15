@@ -35,7 +35,7 @@ async def main():
 
         logger.info('Starting bot')
         await bot.get_updates(timeout=30)
-        await dp.start_polling(bot)
+        await dp.start_polling(bot, polling_timeout=30)
     finally:
         await storage.close()
         await bot.session.close()

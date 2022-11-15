@@ -18,7 +18,8 @@ async def information(call: types.CallbackQuery) -> None:
     service = [1, 0][int(call.data.split(':')[1])]
 
     if service:
-        await call.message.answer_photo(types.URLInputFile('https://i.ytimg.com/vi/RkkAYjm6ves/maxresdefault.jpg'), caption=replies['massage']['information'][service], reply_markup=information_kb(service))
+        await call.message.answer_photo(types.URLInputFile('https://i.ytimg.com/vi/RkkAYjm6ves/maxresdefault.jpg'))
+        await call.message.answer(replies['massage']['information'][service], reply_markup=information_kb(service))
     else:
         await call.message.edit_text(replies['massage']['information'][service], reply_markup=information_kb(service))
     await call.answer()

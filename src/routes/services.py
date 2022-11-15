@@ -199,7 +199,7 @@ async def addpoints(m: types.Message):
 async def checkout(query: types.PreCheckoutQuery):
     await query.answer(ok=True)
 
-@services_router.message_handler(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
+@services_router.message(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
 async def successful_payment(m: types.Message, bot: Bot):
     await db.confirm_booking(m.successful_payment.invoice_payload)
 

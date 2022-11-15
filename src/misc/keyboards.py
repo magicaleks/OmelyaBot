@@ -84,7 +84,7 @@ def bookings_list_kb(bookings: dict[str, str]) -> InlineKeyboardMarkup:
 
 def information_kb(service: int) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
-    if service == 0:
+    if service == 1:
         kb.add(InlineKeyboardButton(text='Биоэнергетический массаж', callback_data='information:1'))
     else:
         kb.add(InlineKeyboardButton(text='Термо-инфракрасная капсула', callback_data='information:0'))

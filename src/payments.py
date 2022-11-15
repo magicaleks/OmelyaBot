@@ -28,11 +28,11 @@ async def _webhook_handler(request):
 async def _init_app(loop):
     app = web.Application(loop=loop, middlewares=[])
     app.router.add_post('/AAFrDOcFUcCywfKh_wdFv9Q-8HrxGLrz49I', _webhook_handler)
-    web.run_app(app, host='0.0.0.0', port=49344, loop=loop)
+    return app
 
 def init_webhook():
     loop = asyncio.get_event_loop()
-    loop.create_task(_init_app(loop))
+    return loop.run_until_complete(_init_app(loop))
 
 async def _get_sign(data: dict) -> str:
     secret = config['payments']['secret']

@@ -10,6 +10,8 @@ from .db.base import check_db_conn
 from .routes import register_all_routes
 from .payments import init_webhook
 
+from aiohttp import web
+
 
 async def _main():
     logger.basicConfig(
@@ -41,7 +43,8 @@ async def _main():
 
 
 def main():
-    init_webhook()
     loop = asyncio.get_event_loop()
     loop.create_task(_main())
     loop.run_forever()
+    app = init_webhook()
+    web.run_app(app, host='0.0.0.0', port=49344)

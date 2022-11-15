@@ -112,7 +112,7 @@ class Booking(_Document):
     
     @property
     def type(self):
-        return PaymentTypes(self._payload['type']) if self._payload['type'] else None
+        return PaymentTypes(self._payload['payment_type']) if self._payload['payment_type'] else None
     
     @property
     def confirmed(self):

@@ -131,7 +131,7 @@ async def booking(call: types.CallbackQuery, bot: Bot):
                 provider_token=config['payments']['token'],
                 start_parameter='booking-payment',
                 currency='rub',
-                prices=[types.LabeledPrice(label='Сеанс массажа', amount=int(config['services']['prices'][booking.massage]))],
+                prices=[types.LabeledPrice(label='Сеанс массажа', amount=int(config['services']['prices'][booking.massage])*100)],
             )
 
         else:

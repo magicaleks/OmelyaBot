@@ -20,11 +20,12 @@ start_router = Router()
 
 @start_router.message(CommandStart())
 async def start_command(m: types.Message, state: FSMContext, bot: Bot) -> None:
-    user = await db.get_user(m.from_user.id)
-    if user:
+    flag = await check_user(m.from_user.id)
+    if flag:
         data = await state.get_data()
         if not data.get('new_user', False):
-            await m.answer(replies['menu']['menu'], reply_markup=menu_kb())
+            user = await db.get_user(m.from_user.id)
+            await m.answer(replies['menu']['menu'].format(user.name), reply_markup=menu_kb())
             await state.clear()
     else:
         await m.answer(replies['start']['greeting'])

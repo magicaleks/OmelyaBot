@@ -5,6 +5,7 @@ from aiogram.types import ContentType
 
 from ..utils import check_user
 from ..db.database import db
+from ..config import config
 
 from ..replies import replies
 from ..misc.keyboards import (
@@ -55,7 +56,10 @@ async def instruction(m: types.Message, state: FSMContext):
         return
 
     await state.clear()
-    await m.answer(replies['start']['instruction'])
+    if m.from_user.id in config['bot']['admins']:
+        await m.answer(replies['start']['admin_instruction'])
+    else:
+        await m.answer(replies['start']['instruction'])
 
 
 @start_router.message(content_types=[ContentType.CONTACT])
@@ -69,8 +73,7 @@ async def signup(m: types.Message, state: FSMContext):
         user.name = m.from_user.full_name
         await db.update_user(user)
         await m.answer(replies['start']['signup_completed'], reply_markup=clear_kb())
-        await m.answer(replies['start']['greeting_offer'].format(user.name))
-        await m.answer(replies['menu']['menu'], reply_markup=menu_kb())
+        await m.answer(replies['menu']['menu'].format(user.name), reply_markup=menu_kb())
 
 
 @start_router.message()

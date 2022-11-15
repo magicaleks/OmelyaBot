@@ -19,6 +19,9 @@ class Database:
     async def update_user(self, user: User):
         await self._db.users.replace_one({'_id': user.id}, user.get_payload())
     
+    async def add_points(self, id: int, points: int):
+        self._db.users.update_one({'_id': id}, {'$inc': {'points': points}})
+    
     async def delete_user(self, id: int):
         await self._db.users.delete_one({'_id': id})
     

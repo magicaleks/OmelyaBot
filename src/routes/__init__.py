@@ -4,6 +4,7 @@ from .start import start_router
 from .services import services_router
 from .contacts import contacts_router
 from .profile import profile_router
+from .information import information_router
 
 
 def register_all_routes(dp: Dispatcher) -> None:
@@ -12,4 +13,5 @@ def register_all_routes(dp: Dispatcher) -> None:
     master_router.include_router(profile_router)
     master_router.include_router(services_router)
     master_router.include_router(contacts_router)
+    master_router.include_router(information_router)
     master_router.include_router(start_router)

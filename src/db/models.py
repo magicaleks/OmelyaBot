@@ -77,6 +77,7 @@ class Day(_Document):
 class PaymentTypes(enum.Enum):
     CASH = 1
     CARD = 2
+    TON = 3
 
 
 class Booking(_Document):

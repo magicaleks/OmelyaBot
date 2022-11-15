@@ -1,6 +1,6 @@
 # Dockerfile for run.py
 
-FROM python:3.10.8-slim
+FROM python:3.10
 # FROM d0a59aeea3bc
 COPY . /app/
 # COPY requirements.txt /

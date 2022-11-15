@@ -34,7 +34,7 @@ async def main():
         # start_worker()
 
         logger.info('Starting bot')
-        await bot.get_updates(timeout=10)
+        await bot.get_updates(timeout=30)
         await dp.start_polling(bot)
     finally:
         await storage.close()

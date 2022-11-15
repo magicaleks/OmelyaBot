@@ -9,12 +9,16 @@ from ..misc.keyboards import (
 
 information_router = Router()
 
-@information_router.callback_query(text='information')
-async def contacts(call: types.CallbackQuery, state: FSMContext) -> None:
+@information_router.callback_query(text_startswith='information')
+async def information(call: types.CallbackQuery) -> None:
     flag = await check_user(call.from_user.id)
     if not flag:
         return
+    
+    service = [1, 0][int(call.data.split(':')[1])]
 
-    for c, i in enumerate(replies['massage']['information'], 1):
-        await call.message.answer(i, reply_markup=information_kb() if c == len(replies['massage']['information']) else None)
+    if service:
+        await call.message.answer_photo(types.URLInputFile('https://i.ytimg.com/vi/RkkAYjm6ves/maxresdefault.jpg'), caption=replies['massage']['information'][service], reply_markup=information_kb(service))
+    else:
+        await call.message.edit_text(replies['massage']['information'][service], reply_markup=information_kb(service))
     await call.answer()

@@ -8,9 +8,10 @@ import logging as logger
 from .config import config
 from .db.base import check_db_conn
 from .routes import register_all_routes
-# from .worker import start_worker
+from .payments import init_webhook
 
-async def main():
+
+async def _main():
     logger.basicConfig(
         level=logger.INFO,
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
@@ -31,8 +32,6 @@ async def main():
 
     register_all_routes(dp)
     try:
-        # start_worker()
-
         logger.info('Starting bot')
         await bot.get_updates(timeout=30)
         await dp.start_polling(bot, polling_timeout=30)
@@ -41,5 +40,8 @@ async def main():
         await bot.session.close()
 
 
-if __name__ == '__main__':
-    asyncio.run(main())
+def main():
+    init_webhook()
+    loop = asyncio.get_event_loop()
+    loop.create_task(_main())
+    loop.run_forever()

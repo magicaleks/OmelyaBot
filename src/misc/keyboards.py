@@ -17,7 +17,7 @@ def menu_kb() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.row(InlineKeyboardButton(text='📅Запись на массаж', callback_data='booking:massage'))
     kb.row(InlineKeyboardButton(text='👟Каталог кроссовок', url='https://t.me/+hkllpJFpbshjY2Iy'), InlineKeyboardButton(text='💎Мой кошелёк', callback_data='profile'))
-    kb.row(InlineKeyboardButton(text='🤝Пригласить друга', callback_data='profile:referal'), InlineKeyboardButton(text='ℹ️Информация', callback_data='information'))
+    kb.row(InlineKeyboardButton(text='🤝Пригласить друга', callback_data='profile:referal'), InlineKeyboardButton(text='ℹ️Информация', callback_data='information:0'))
     return kb.as_markup()
 
 def massage_kb() -> InlineKeyboardMarkup:
@@ -82,8 +82,12 @@ def bookings_list_kb(bookings: dict[str, str]) -> InlineKeyboardMarkup:
     kb.adjust(1)
     return kb.as_markup()
 
-def information_kb() -> InlineKeyboardMarkup:
+def information_kb(service: int) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
+    if service == 1:
+        kb.add(InlineKeyboardButton(text='Биоэнергетический массаж', callback_data='information:0'))
+    else:
+        kb.add(InlineKeyboardButton(text='Термо-инфракрасная капсула', callback_data='information:1'))
     kb.add(InlineKeyboardButton(text='✔️Наши результаты', url='https://t.me/+y4zUIRdMQDUyY2Yy'))
     kb.add(InlineKeyboardButton(text='Вернуться в меню', callback_data='booking:new'))
     kb.adjust(1)

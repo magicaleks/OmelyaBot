@@ -41,7 +41,7 @@ async def referal(obj, bot: Bot):
     user = await db.get_user(obj.from_user.id)
 
     me = await bot.me()
-    ref_link = f"https://t.me/{me.username}?start={user.id}"
+    ref_link = f"<a href=\"https://t.me/{me.username}?start={user.id}\">ссылка</a>"
     ref_text = ''
 
     if not len(user.referals_ids):

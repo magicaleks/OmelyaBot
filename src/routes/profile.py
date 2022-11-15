@@ -63,9 +63,9 @@ async def referal(obj, bot: Bot):
 
     if isinstance(obj, types.Message):
         # await obj.answer(replies['profile']['profile'].format(user.id, user.name, '\\'+user.phone if user.phone.startswith('+') else user.phone, user.points, ref_text), reply_markup=profile_kb())
-        await obj.answer(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb())
+        await obj.answer(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='HTML')
     elif isinstance(obj, types.CallbackQuery):
         # await obj.message.edit_text(replies['profile']['profile'].format(user.id, user.name, '\\'+user.phone if user.phone.startswith('+') else user.phone, user.points, ref_text), reply_markup=profile_kb())
-        await obj.message.edit_text(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb())
+        await obj.message.edit_text(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='HTML')
 
         await obj.answer()

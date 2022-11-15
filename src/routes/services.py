@@ -75,7 +75,6 @@ async def booking(call: types.CallbackQuery, bot: Bot):
             referer = await db.get_user(user.referer_id)
             if referer:
                 await db.add_points(referer.id, int(config['services']['prices'][booking.massage]*0.13))
-
                 if referer.referer_id:
                     _referer = await db.get_user(referer.referer_id)
                     if _referer:
@@ -122,25 +121,38 @@ async def booking(call: types.CallbackQuery, bot: Bot):
     elif len(params) == 4:
         await call.message.edit_text(replies['menu']['choose_payment_type'], reply_markup=choose_payment_type_kb(params[1], params[2], params[3]))
     elif len(params) == 5:
-        await call.message.edit_text(replies['menu']['menu'].format(user.name), reply_markup=menu_kb())
-        _date = datetime.datetime.strptime(params[2], '%d/%m/%Y')
-        if _date.timestamp() + int(params[3])*3600 <= time.time():
-            await call.answer(replies['menu']['error_booked'], show_alert=True)
+        if int(params[4]) == 2:
+            booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
+            await call.message.answer_invoice(
+                title='Оплата сеанса массажа',
+                description='Оналйн оплата забронированного сеанса массажа в оздоровительном клубе "Омеля"',
+                payload=booking.id,
+                provider_token=config['payments']['token'],
+                start_parameter='booking-payment',
+                currency='rub',
+                prices=[types.LabeledPrice(label='Сеанс массажа', amount=int(config['services']['prices'][booking.massage]))],
+            )
+
+        else:
+            await call.message.edit_text(replies['menu']['menu'].format(user.name), reply_markup=menu_kb())
+            _date = datetime.datetime.strptime(params[2], '%d/%m/%Y')
+            if _date.timestamp() + int(params[3])*3600 <= time.time():
+                await call.answer(replies['menu']['error_booked'], show_alert=True)
+                return
+
+            day = await db.get_day(params[2])
+
+            booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
+            payment_text = ['наличными', 'картой', 'с помощью TON'][int(params[4])-1]
+            for admin in config['bot']['admins']:
+                await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id), reply_markup=admin_booking_kb(booking.id))
+                # if booking.type == PaymentTypes.CASH:
+                #     await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id), reply_markup=admin_booking_kb(booking.id))
+                # await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id))
+
+            await call.answer(replies['menu']['booked'], show_alert=True)
             return
-
-        day = await db.get_day(params[2])
-
-        booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
-        payment_text = ['наличными', 'картой', 'с помощью TON'][int(params[4])-1]
-        for admin in config['bot']['admins']:
-            await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id), reply_markup=admin_booking_kb(booking.id))
-            # if booking.type == PaymentTypes.CASH:
-            #     await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id), reply_markup=admin_booking_kb(booking.id))
-            # await bot.send_message(admin, replies['menu']['booked_notification'].format(config['services']['massages'][int(params[1])], f'{day.alias} {params[3]}:00', user.name, user.phone, user.points, payment_text, user.id))
-
-        await call.answer(replies['menu']['booked'], show_alert=True)
-        return
-    
+        
     await call.answer()
 
 
@@ -182,3 +194,20 @@ async def addpoints(m: types.Message):
         return
 
     await m.answer('Успешно!')
+
+@services_router.pre_checkout_query(lambda query: True)
+async def checkout(query: types.PreCheckoutQuery):
+    await query.answer(ok=True)
+
+@services_router.message_handler(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
+async def successful_payment(m: types.Message, bot: Bot):
+    await db.confirm_booking(m.successful_payment.invoice_payload)
+
+    user = await db.get_user(m.from_user.id)
+
+    day = await db.get_day(m.successful_payment.invoice_payload.split('@')[0])
+
+    booking = await db.get_booking(m.successful_payment.invoice_payload)
+    payment_text = ['наличными', 'картой', 'с помощью TON'][booking.type.value-1]
+    for admin in config['bot']['admins']:
+        await bot.send_message(admin, replies['menu']['booked_notification'].format(booking.massage, f"{day.alias} {booking.id.split('@')[1]}:00", user.name, user.phone, user.points, payment_text, user.id), reply_markup=admin_booking_kb(booking.id))

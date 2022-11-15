@@ -121,6 +121,7 @@ async def booking(call: types.CallbackQuery, bot: Bot):
     elif len(params) == 4:
         await call.message.edit_text(replies['menu']['choose_payment_type'], reply_markup=choose_payment_type_kb(params[1], params[2], params[3]))
     elif len(params) == 5:
+        day = await db.get_day(params[2])
         if int(params[4]) == 2:
             booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
             await call.message.answer_invoice(
@@ -139,8 +140,6 @@ async def booking(call: types.CallbackQuery, bot: Bot):
             if _date.timestamp() + int(params[3])*3600 <= time.time():
                 await call.answer(replies['menu']['error_booked'], show_alert=True)
                 return
-
-            day = await db.get_day(params[2])
 
             booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
             payment_text = ['наличными', 'картой', 'с помощью TON'][int(params[4])-1]

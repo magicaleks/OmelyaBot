@@ -42,7 +42,7 @@ async def referal(obj, bot: Bot):
 
     me = await bot.me()
     # ref_link = f"<a href=\"https://t.me/{me.username}?start={user.id}\">ссылка</a>"
-    ref_link = f"`https://t.me/{me.username}?start={user.id}`"
+    ref_link = f"`https://t.me/{me.username}?start={user.id} `"
     ref_text = ''
 
     if not len(user.referals_ids):

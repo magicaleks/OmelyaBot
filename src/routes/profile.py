@@ -41,18 +41,19 @@ async def referal(obj, bot: Bot):
     user = await db.get_user(obj.from_user.id)
 
     me = await bot.me()
-    ref_link = f"<a href=\"https://t.me/{me.username}?start={user.id}\">ссылка</a>"
+    # ref_link = f"<a href=\"https://t.me/{me.username}?start={user.id}\">ссылка</a>"
+    ref_link = f"`https://t.me/{me.username}?start={user.id}`"
     ref_text = ''
 
     if not len(user.referals_ids):
-        ref_text = f'Поторопись, ты ещё никого не пригласил! вот ваша ссылка {ref_link}'
+        ref_text = f'Вот ваша {ref_link}'
 
     elif 9 < len(user.referals_ids) % 100 < 22:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nвот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша {ref_link}"
     elif 1 <= len(user.referals_ids) % 10 < 5:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nвот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nВот ваша {ref_link}"
     else:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nвот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша {ref_link}"
 
     try:
         if user.referer_id:

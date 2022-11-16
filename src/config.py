@@ -20,6 +20,6 @@ config = {
     },
 
     'payments': {
-        'token': '381764678:TEST:45436'
+        'token': '390540012:LIVE:28375'
     }
 }

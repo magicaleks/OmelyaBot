@@ -102,6 +102,9 @@ class Database:
         async for b in self._db.bookings.find({'user': user}):
             res.append(Booking(**b))
         return res
+    
+    # async def change_payment_type(self, id: str, payment_type: int):
+    #     await self._db.bookings.update_one({'_id': id}, {'$set': {'payment_type': payment_type}})
 
 
 db = Database(_db)

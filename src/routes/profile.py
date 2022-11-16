@@ -46,14 +46,14 @@ async def referal(obj, bot: Bot):
     ref_text = ''
 
     if not len(user.referals_ids):
-        ref_text = f'Вот ваша {ref_link}'
+        ref_text = f'Вот ваша ссылка {ref_link}'
 
     elif 9 < len(user.referals_ids) % 100 < 22:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка {ref_link}"
     elif 1 <= len(user.referals_ids) % 10 < 5:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nВот ваша {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nВот ваша ссылка {ref_link}"
     else:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка {ref_link}"
 
     try:
         if user.referer_id:
@@ -64,9 +64,9 @@ async def referal(obj, bot: Bot):
 
     if isinstance(obj, types.Message):
         # await obj.answer(replies['profile']['profile'].format(user.id, user.name, '\\'+user.phone if user.phone.startswith('+') else user.phone, user.points, ref_text), reply_markup=profile_kb())
-        await obj.answer(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='HTML')
+        await obj.answer(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='MarkdownV2')
     elif isinstance(obj, types.CallbackQuery):
         # await obj.message.edit_text(replies['profile']['profile'].format(user.id, user.name, '\\'+user.phone if user.phone.startswith('+') else user.phone, user.points, ref_text), reply_markup=profile_kb())
-        await obj.message.edit_text(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='HTML')
+        await obj.message.edit_text(replies['profile']['referal'].format(ref_text), reply_markup=referal_kb(), parse_mode='MarkdownV2')
 
         await obj.answer()

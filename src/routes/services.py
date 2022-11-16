@@ -91,6 +91,10 @@ async def booking(call: types.CallbackQuery, bot: Bot):
         return
     
     elif params[1] == 'user_cancel':
+        _booking = await db.get_booking(params[2])
+        if _booking.confirmed:
+            await call.answer(replies['menu']['booking_already_confirmed'])
+            return
         await db.cancel_booking(params[2])
         _bookings = await db.get_user_bookings(call.from_user.id)
         bookings = {}
@@ -121,6 +125,12 @@ async def booking(call: types.CallbackQuery, bot: Bot):
     elif len(params) == 4:
         await call.message.edit_text(replies['menu']['choose_payment_type'], reply_markup=choose_payment_type_kb(params[1], params[2], params[3]))
     elif len(params) == 5:
+        _b = await db.get_booking(f"{params[2]}@{params[3]}@{params[1]}")
+        if _b:
+            if _b.confirmed:
+                await call.answer(replies['menu']['booking_already_confirmed'])
+                return
+            await db.cancel_booking(_b.id)
         day = await db.get_day(params[2])
         if int(params[4]) == 2:
             booking = await db.book(config['services']['massages'][int(params[1])], params[1], day.id, params[3], user.id, PaymentTypes(int(params[4])))
@@ -194,15 +204,26 @@ async def addpoints(m: types.Message):
 
     await m.answer('Успешно!')
 
+
 @services_router.pre_checkout_query(lambda query: True)
 async def checkout(query: types.PreCheckoutQuery):
     await query.answer(ok=True)
+
 
 @services_router.message(content_types=types.ContentType.SUCCESSFUL_PAYMENT)
 async def successful_payment(m: types.Message, bot: Bot):
     await db.confirm_booking(m.successful_payment.invoice_payload)
 
     user = await db.get_user(m.from_user.id)
+
+    if user.referer_id:
+            referer = await db.get_user(user.referer_id)
+            if referer:
+                await db.add_points(referer.id, int(config['services']['prices'][booking.massage]*0.13))
+                if referer.referer_id:
+                    _referer = await db.get_user(referer.referer_id)
+                    if _referer:
+                        await db.add_points(_referer.id, int(config['services']['prices'][booking.massage]*0.04))
 
     day = await db.get_day(m.successful_payment.invoice_payload.split('@')[0])
 

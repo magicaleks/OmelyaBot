@@ -16,11 +16,15 @@ replies = {
         'error_booking_hour': 'К сожалению на сегодня все сеансы уже заняты :(',
         'booked': 'Вы успешно забронировали сеанс!',
         'booked_notification': 'Новая бронь на {} {}\nИмя {}\nНомер {}\nБаллы клиента {}\nОплата {}\nid={}',
+        'booking_cancelled_notification_admin': 'Отменена бронь на {} {}\nИмя {}\nНомер {}\nБаллы клиента {}\nid={}',
+        'booking_cancelled_notification_user': 'Ваша бронь на {} {} отменена!',
         'error_booked': 'К сожалению, вы не можете записаться на это время :(',
         'choose_payment_type': 'Выберите тип оплаты: онлайн или наличные',
         'booking_confirmed': 'Оплата брони подтверждена, баллы начислены',
         'booking_cancelled': 'Бронь отменена',
+        'booking_cant_be_cancelled': 'Бронь подтверждена и уже не может быть отменена!',
         'booking_already_confirmed': 'Бронь уже подтверждена!',
+        'booking_already_cancelled': 'Бронь уже отменена!',
         'bookings_list': 'Список заброннированных вами сеансов. Чтобы отменить бронь, нажмите на кнопку нужного сеанса.'
     },
 

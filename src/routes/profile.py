@@ -46,14 +46,14 @@ async def referal(obj, bot: Bot):
     ref_text = ''
 
     if not len(user.referals_ids):
-        ref_text = f'Вот ваша ссылка {ref_link}'
+        ref_text = f'Вот ваша ссылка, нажми, чтобы скопировать {ref_link}'
 
     elif 9 < len(user.referals_ids) % 100 < 22:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка, нажми, чтобы скопировать {ref_link}"
     elif 1 <= len(user.referals_ids) % 10 < 5:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nВот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человека\nВот ваша ссылка, нажми, чтобы скопировать {ref_link}"
     else:
-        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка {ref_link}"
+        ref_text = f"Ты уже пригласил {len(user.referals_ids)} человек\nВот ваша ссылка, нажми, чтобы скопировать {ref_link}"
 
     try:
         if user.referer_id:

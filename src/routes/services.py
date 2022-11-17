@@ -96,8 +96,8 @@ async def booking(call: types.CallbackQuery, bot: Bot):
             await db.cancel_booking(params[2])
             await call.answer(replies['menu']['booking_cancelled'], show_alert=True)
             day = await db.get_day(booking.id.split('@')[0])
-            time = booking.id.split('@')[1]
-            await bot.send_message(booking.user, replies['menu']['booking_cancelled_notification_user'].format(booking.massage, f'{day.alias} {time}:00'))
+            hour = booking.id.split('@')[1]
+            await bot.send_message(booking.user, replies['menu']['booking_cancelled_notification_user'].format(booking.massage, f'{day.alias} {hour}:00'))
         await call.message.edit_reply_markup(None)
         return
     
@@ -117,9 +117,9 @@ async def booking(call: types.CallbackQuery, bot: Bot):
         await call.message.edit_reply_markup(reply_markup=bookings_list_kb(bookings))
         await call.answer(replies['menu']['booking_cancelled'], show_alert=True)
         day = await db.get_day(_booking.id.split('@')[0])
-        time = _booking.id.split('@')[1]
+        hour = _booking.id.split('@')[1]
         for admin in config['bot']['admins']:
-            await bot.send_message(admin, replies['menu']['booking_cancelled_notification_admin'].format(_booking.massage, f'{day.alias} {time}:00', user.name, user.phone, user.points, user.id))
+            await bot.send_message(admin, replies['menu']['booking_cancelled_notification_admin'].format(_booking.massage, f'{day.alias} {hour}:00', user.name, user.phone, user.points, user.id))
         return
     
     elif params[1] == 'list':

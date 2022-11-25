@@ -35,8 +35,8 @@ async def _main():
     register_all_routes(dp)
     try:
         logger.info('Starting bot')
-        await bot.get_updates(timeout=30)
-        await dp.start_polling(bot, polling_timeout=30)
+        await bot.get_updates(timeout=50)
+        await dp.start_polling(bot, polling_timeout=150)
     finally:
         await storage.close()
         await bot.session.close()

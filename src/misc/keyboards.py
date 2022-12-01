@@ -16,7 +16,7 @@ def signup_kb() -> ReplyKeyboardMarkup:
 def menu_kb() -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     kb.row(InlineKeyboardButton(text='📅Запись на массаж', callback_data='booking:massage'))
-    kb.row(InlineKeyboardButton(text='👟Каталог кроссовок', url='https://t.me/+hkllpJFpbshjY2Iy'), InlineKeyboardButton(text='💎Мой кошелёк', callback_data='profile'))
+    kb.row(InlineKeyboardButton(text='👟Каталог кроссовок', url='https://t.me/sneakeromelya'), InlineKeyboardButton(text='💎Мой кошелёк', callback_data='profile'))
     kb.row(InlineKeyboardButton(text='🤝Пригласить друга', callback_data='profile:referal'), InlineKeyboardButton(text='ℹ️Информация', callback_data='information:0'))
     return kb.as_markup()
 

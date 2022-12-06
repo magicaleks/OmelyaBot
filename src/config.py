@@ -5,7 +5,7 @@ config = {
     },
 
     'db': {
-        'uri': 'mongodb://lkEaRsah229456:7qw8blnd93sa87@massagedb:27017/',
+        'uri': 'mongodb://gk42fiuvxdalkh:bupoiq3HblSDA1@db:27017/',
         'timeout': 1000,
         'name': 'massagedb'
     },

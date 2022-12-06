@@ -6,7 +6,7 @@ config = {
 
     'db': {
         'uri': 'mongodb://lkEaRsah229456:7qw8blnd93sa87@massagedb:27017/',
-        'timeout': 10,
+        'timeout': 20,
         'name': 'massagedb'
     },
 

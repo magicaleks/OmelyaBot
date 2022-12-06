@@ -11,6 +11,10 @@ services:
     
     volumes:
       - ./mongo:/data/db
+
+    environment:
+    - MONGO_INITDB_ROOT_USERNAME=lkEaRsah229456
+    - MONGO_INITDB_ROOT_PASSWORD=7qw8blnd93sa87
   
   massagebot:
     container_name: massageBot
